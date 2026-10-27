@@ -7,7 +7,7 @@
     <title>Detroit Diesel V8 Revisie Project | Van Kaal Blok tot Eerste Start</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Chakra Petch (voor het industriële en mechanische gevoel) -->
+    <!-- Google Fonts: Inter & Chakra Petch -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -30,7 +30,7 @@
                             900: '#111318',
                             800: '#1c1f26',
                             700: '#2a2e39',
-                            accent: '#f97316', // Industrieel Oranje
+                            accent: '#f97316',
                             red: '#ef4444'
                         }
                     }
@@ -40,7 +40,6 @@
     </script>
 
     <style>
-        /* Subtiel industrieel grid achtergrondpatroon */
         .bg-tech-grid {
             background-color: #090a0c;
             background-image:
@@ -49,7 +48,6 @@
             background-size: 32px 32px;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -83,7 +81,6 @@
             <div class="flex items-center gap-3">
                 <div
                     class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-500/20 border border-orange-400/30 shrink-0">
-                    <!-- Zuiger / Tandwiel Icoon -->
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -110,7 +107,7 @@
             <div class="flex items-center gap-2 sm:gap-4">
                 <button id="showAllTimelineBtn"
                     class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-garage-800 hover:bg-orange-500 text-zinc-200 hover:text-white border border-zinc-700 hover:border-orange-500 transition-all text-xs sm:text-sm font-medium shadow">
-                    <svg class="w-4 h-4 text-orange-400 group-hover:text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"></path>
                     </svg>
                     <span>Volledige Tijdlijn (<span id="totalItemsBadge">0</span>)</span>
@@ -120,7 +117,7 @@
     </header>
 
     <!-- =====================================================================
-         HERO SECTIE
+         HERO SECTIE (ZONDER DUBBELE KNOPPEN)
     ====================================================================== -->
     <section class="relative border-b border-zinc-800/80 bg-gradient-to-b from-garage-900/80 via-garage-950/40 to-transparent pt-8 pb-8 sm:pt-14 sm:pb-12">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -134,22 +131,6 @@
             <p class="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto mt-4 leading-relaxed">
                 Volledig visueel logboek van de complete revisie, machinale bewerking, machinekamer-installatie en de eerste succesvolle proefstart van de Detroit Diesel V8.
             </p>
-
-            <!-- Snelle Fase Knoppen -->
-            <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
-                <button data-phase="Opbouw" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
-                    <span>Stap 01: Opbouw</span>
-                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Opbouw">0</span>
-                </button>
-                <button data-phase="Installatie" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
-                    <span>Stap 02: Installatie</span>
-                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Installatie">0</span>
-                </button>
-                <button data-phase="Proefdraaien" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
-                    <span>Stap 03: Proefdraaien</span>
-                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Proefdraaien">0</span>
-                </button>
-            </div>
         </div>
     </section>
 
@@ -158,7 +139,7 @@
     ====================================================================== -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
-        <!-- Hoofdstuk Navigatie Tabs -->
+        <!-- Hoofdstuk Navigatie Kaarten -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <button data-phase="Opbouw" class="phase-card group p-5 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
@@ -287,7 +268,6 @@
          JAVASCRIPT LOGICA
     ====================================================================== -->
     <script>
-        // Jouw projectdata netjes ingedeeld per map
         const PROJECT_MEDIA = {
             Opbouw: [
                 { file: "IMG-20260803-WA0017.jpg", title: "Gereviseerde Detroit V8 krukas", note: "Binnengekomen van het revisiebedrijf, vers geslepen en beschermd verpakt in folie." },
@@ -349,22 +329,16 @@
         }
 
         function updateUIState() {
-            // Tellers bijwerken
             const opbouwCount = getNormalizedItems('Opbouw').length;
             const instCount = getNormalizedItems('Installatie').length;
             const proefCount = getNormalizedItems('Proefdraaien').length;
             const total = opbouwCount + instCount + proefCount;
 
             document.getElementById('totalItemsBadge').textContent = total;
-            document.getElementById('badge-count-Opbouw').textContent = opbouwCount;
-            document.getElementById('badge-count-Installatie').textContent = instCount;
-            document.getElementById('badge-count-Proefdraaien').textContent = proefCount;
-            
             document.getElementById('tab-count-Opbouw').textContent = `${opbouwCount} items`;
             document.getElementById('tab-count-Installatie').textContent = `${instCount} items`;
             document.getElementById('tab-count-Proefdraaien').textContent = `${proefCount} items`;
 
-            // Fase kaarten stijlen
             document.querySelectorAll('.phase-card').forEach(card => {
                 const phase = card.getAttribute('data-phase');
                 if (phase === currentPhase) {
@@ -374,7 +348,6 @@
                 }
             });
 
-            // Type filter knoppen stijlen
             document.querySelectorAll('.type-filter-btn').forEach(btn => {
                 const type = btn.getAttribute('data-type');
                 if (type === currentTypeFilter) {
@@ -384,12 +357,10 @@
                 }
             });
 
-            // Titels en beschrijvingen bijwerken
             const meta = PHASE_META[currentPhase];
             document.getElementById('currentSectionTitle').textContent = meta.title;
             document.getElementById('currentSectionDesc').textContent = meta.desc;
 
-            // Footer navigatie knoppen
             const prevBtn = document.getElementById('prevPhaseBtn');
             const nextBtn = document.getElementById('nextPhaseBtn');
 
@@ -474,7 +445,6 @@
             });
         }
 
-        // Lightbox functionaliteit
         const lightboxModal = document.getElementById('lightboxModal');
         const lbContentContainer = document.getElementById('lbContentContainer');
 
@@ -523,16 +493,14 @@
             }
         }
 
-        // Event Listeners voor Fase wisselen
-        document.querySelectorAll('.phase-card, .quick-phase-btn').forEach(el => {
+        document.querySelectorAll('.phase-card').forEach(el => {
             el.addEventListener('click', () => {
                 currentPhase = el.getAttribute('data-phase');
                 renderGallery();
-                window.scrollTo({ top: 400, behavior: 'smooth' });
+                window.scrollTo({ top: 350, behavior: 'smooth' });
             });
         });
 
-        // Type filter knoppen
         document.querySelectorAll('.type-filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentTypeFilter = btn.getAttribute('data-type');
@@ -540,30 +508,27 @@
             });
         });
 
-        // Volledige tijdlijn knop (opent direct Opbouw met 'Alles')
         document.getElementById('showAllTimelineBtn').addEventListener('click', () => {
             currentPhase = "Opbouw";
             currentTypeFilter = "all";
             renderGallery();
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            window.scrollTo({ top: 350, behavior: 'smooth' });
         });
 
-        // Onderste fase navigatie
         document.getElementById('prevPhaseBtn').addEventListener('click', () => {
             if (currentPhase === "Installatie") currentPhase = "Opbouw";
             else if (currentPhase === "Proefdraaien") currentPhase = "Installatie";
             renderGallery();
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            window.scrollTo({ top: 350, behavior: 'smooth' });
         });
 
         document.getElementById('nextPhaseBtn').addEventListener('click', () => {
             if (currentPhase === "Opbouw") currentPhase = "Installatie";
             else if (currentPhase === "Installatie") currentPhase = "Proefdraaien";
             renderGallery();
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            window.scrollTo({ top: 350, behavior: 'smooth' });
         });
 
-        // Lightbox besturing
         document.getElementById('closeLightboxBtn').addEventListener('click', closeLightbox);
         document.getElementById('prevMediaBtn').addEventListener('click', (e) => {
             e.stopPropagation();
@@ -582,7 +547,6 @@
             }
         });
 
-        // Toetsenbord ondersteuning
         window.addEventListener('keydown', (e) => {
             if (!lightboxModal.classList.contains('hidden')) {
                 if (e.key === 'Escape') closeLightbox();
@@ -597,7 +561,6 @@
             }
         });
 
-        // Swipe ondersteuning op mobiel
         let touchStartX = 0;
         document.getElementById('lbTouchArea').addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
@@ -615,7 +578,6 @@
             }
         }, { passive: true });
 
-        // Initialiseren bij laden
         window.addEventListener('DOMContentLoaded', () => {
             renderGallery();
         });
