@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="nl" class="dark scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detroit Diesel V8 Revisie Project | Van Kaal Blok tot Eerste Start</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Chakra Petch (voor het industriële en mechanische gevoel) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Chakra Petch', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        garage: {
+                            950: '#090a0c',
+                            900: '#111318',
+                            800: '#1c1f26',
+                            700: '#2a2e39',
+                            accent: '#f97316', // Industrieel Oranje
+                            red: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Subtiel industrieel grid achtergrondpatroon */
+        .bg-tech-grid {
+            background-color: #090a0c;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #090a0c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2e39;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-tech-grid text-zinc-100 font-sans min-h-screen flex flex-col selection:bg-orange-500 selection:text-white antialiased">
+
+    <!-- =====================================================================
+         HEADER / NAVIGATIEBALK
+    ====================================================================== -->
+    <header class="sticky top-0 z-30 bg-garage-950/90 backdrop-blur-md border-b border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+
+            <!-- Logo & Titel -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-500/20 border border-orange-400/30 shrink-0">
+                    <!-- Zuiger / Tandwiel Icoon -->
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">Maritiem
+                            Project</span>
+                    </div>
+                    <h1
+                        class="font-display font-bold text-base sm:text-xl tracking-wide uppercase text-white leading-tight">
+                        Detroit Diesel <span class="text-orange-500">V8 Revisie</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Rechts: Snelkoppeling naar Tijdlijn -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button id="showAllTimelineBtn"
+                    class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-garage-800 hover:bg-orange-500 text-zinc-200 hover:text-white border border-zinc-700 hover:border-orange-500 transition-all text-xs sm:text-sm font-medium shadow">
+                    <svg class="w-4 h-4 text-orange-400 group-hover:text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"></path>
+                    </svg>
+                    <span>Volledige Tijdlijn (<span id="totalItemsBadge">0</span>)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         HERO SECTIE
+    ====================================================================== -->
+    <section class="relative border-b border-zinc-800/80 bg-gradient-to-b from-garage-900/80 via-garage-950/40 to-transparent pt-8 pb-8 sm:pt-14 sm:pb-12">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-mono mb-4">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Revisie & Installatie Voltooid
+            </div>
+            <h2 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-wide text-white leading-tight">
+                Van Kaal Gietijzer tot <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">Draaiende Scheepsmotor</span>
+            </h2>
+            <p class="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto mt-4 leading-relaxed">
+                Volledig visueel logboek van de complete revisie, machinale bewerking, machinekamer-installatie en de eerste succesvolle proefstart van de Detroit Diesel V8.
+            </p>
+
+            <!-- Snelle Fase Knoppen -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+                <button data-phase="Opbouw" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
+                    <span>Stap 01: Opbouw</span>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Opbouw">0</span>
+                </button>
+                <button data-phase="Installatie" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
+                    <span>Stap 02: Installatie</span>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Installatie">0</span>
+                </button>
+                <button data-phase="Proefdraaien" class="quick-phase-btn px-5 py-2.5 rounded-xl border border-zinc-700 bg-garage-900 hover:border-orange-500 text-sm font-semibold transition-all flex items-center gap-2">
+                    <span>Stap 03: Proefdraaien</span>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-black/50 text-orange-400" id="badge-count-Proefdraaien">0</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         HOOFDSECTIE: FASE TABS & MEDIA GRID
+    ====================================================================== -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- Hoofdstuk Navigatie Tabs -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <button data-phase="Opbouw" class="phase-card group p-5 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-mono text-xs uppercase tracking-wider text-orange-400 font-semibold">Fase 01</span>
+                    <span class="font-mono text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-zinc-300" id="tab-count-Opbouw">0 items</span>
+                </div>
+                <h3 class="font-display font-bold text-xl uppercase tracking-wide text-white group-hover:text-orange-400 transition-colors">1. Opbouw & Revisie</h3>
+                <p class="text-xs text-zinc-400 mt-1 leading-relaxed">Krukas, cilinderkop, kleppentrein, Roots-blower en opbouw op de bok.</p>
+            </button>
+
+            <button data-phase="Installatie" class="phase-card group p-5 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-mono text-xs uppercase tracking-wider text-orange-400 font-semibold">Fase 02</span>
+                    <span class="font-mono text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-zinc-300" id="tab-count-Installatie">0 items</span>
+                </div>
+                <h3 class="font-display font-bold text-xl uppercase tracking-wide text-white group-hover:text-orange-400 transition-colors">2. Inbouw Machinekamer</h3>
+                <p class="text-xs text-zinc-400 mt-1 leading-relaxed">Plaatsing in het schip, uitlaatisolatie, filters en koelsysteem.</p>
+            </button>
+
+            <button data-phase="Proefdraaien" class="phase-card group p-5 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-mono text-xs uppercase tracking-wider text-orange-400 font-semibold">Fase 03</span>
+                    <span class="font-mono text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-zinc-300" id="tab-count-Proefdraaien">0 items</span>
+                </div>
+                <h3 class="font-display font-bold text-xl uppercase tracking-wide text-white group-hover:text-orange-400 transition-colors">3. Proefdraaien & Start</h3>
+                <p class="text-xs text-zinc-400 mt-1 leading-relaxed">Eerste koude start in de werkplaats en draaien op locatie.</p>
+            </button>
+        </div>
+
+        <!-- Filter & Titelbalk per Fase -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-zinc-800">
+          <div>
+              <h3 id="currentSectionTitle" class="font-display font-bold text-2xl sm:text-3xl uppercase text-white">Opbouw & Revisie</h3>
+              <p id="currentSectionDesc" class="text-xs sm:text-sm text-zinc-400 mt-1">Overzicht van de machinale bewerking en opbouw.</p>
+          </div>
+
+          <!-- Type Filter (Alles / Foto's / Video's) -->
+          <div class="flex items-center gap-1.5 bg-garage-900 p-1.5 rounded-xl border border-zinc-800 self-start sm:self-auto">
+              <button data-type="all" class="type-filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">Alles</button>
+              <button data-type="image" class="type-filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">Foto's</button>
+              <button data-type="video" class="type-filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">Video's</button>
+          </div>
+        </div>
+
+        <!-- Media Grid -->
+        <div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamisch gevuld door JavaScript -->
+        </div>
+
+        <!-- Navigatie tussen hoofdstukken onderaan -->
+        <div id="chapterNavFooter" class="mt-16 pt-8 border-t border-zinc-800 flex items-center justify-between">
+            <button id="prevPhaseBtn" class="px-5 py-2.5 rounded-xl bg-garage-900 hover:bg-garage-800 border border-zinc-700 text-sm font-medium text-zinc-300 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                <span id="prevPhaseLabel">Vorige Fase</span>
+            </button>
+            <button id="nextPhaseBtn" class="px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-sm font-semibold text-white transition-colors flex items-center gap-2 shadow-lg shadow-orange-500/20">
+                <span id="nextPhaseLabel">Volgende Fase</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- =====================================================================
+         LIGHTBOX MODAL VOOR GROTE FOTO & VIDEO WEERGAVE + SWIPE
+    ====================================================================== -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex-col justify-between select-none">
+        <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-zinc-800/80 bg-garage-950/80 z-20">
+            <div class="flex items-center gap-3 min-w-0">
+                <span id="lbPhaseBadge" class="font-mono text-xs px-2.5 py-1 rounded bg-orange-500/20 text-orange-400 border border-orange-500/30 shrink-0">Opbouw</span>
+                <div class="truncate">
+                    <h4 id="lbTitle" class="font-medium text-sm sm:text-base text-white truncate">Titel</h4>
+                    <p id="lbSubtitle" class="font-mono text-[11px] text-zinc-400 truncate">Fase detail</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 shrink-0">
+                <span id="lbCounter" class="font-mono text-xs text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">1 / 5</span>
+                <button id="closeLightboxBtn" class="p-2.5 rounded-xl bg-zinc-800 hover:bg-red-600 text-zinc-200 hover:text-white transition-colors" aria-label="Sluiten">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="lbTouchArea" class="relative flex-1 flex items-center justify-center p-2 sm:p-6 overflow-hidden">
+            <button id="prevMediaBtn" class="absolute left-3 sm:left-6 z-20 p-3 sm:p-4 rounded-full bg-garage-900/90 hover:bg-orange-500 text-white border border-zinc-700 transition-all shadow-xl active:scale-95" aria-label="Vorige">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+
+            <div id="lbContentContainer" class="max-h-full max-w-5xl w-full flex flex-col items-center justify-center">
+                <!-- Dynamisch gevuld -->
+            </div>
+
+            <button id="nextMediaBtn" class="absolute right-3 sm:right-6 z-20 p-3 sm:p-4 rounded-full bg-garage-900/90 hover:bg-orange-500 text-white border border-zinc-700 transition-all shadow-xl active:scale-95" aria-label="Volgende">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+        <div class="px-4 sm:px-6 py-3.5 border-t border-zinc-800/80 bg-garage-950/90 text-center z-20">
+            <p id="lbDescription" class="text-xs sm:text-sm text-zinc-300 max-w-2xl mx-auto"></p>
+            <p class="text-[11px] text-zinc-500 mt-1 sm:hidden">Swipe naar links of rechts om te bladeren</p>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         FOOTER
+    ====================================================================== -->
+    <footer class="border-t border-zinc-800/80 bg-garage-950 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <p class="font-display font-bold text-white text-base">Detroit Diesel V8 Revisie & Installatie</p>
+                <p class="text-xs text-zinc-400 mt-1">Revisie uitgevoerd door <span class="text-orange-400 font-medium">JRS Marine Support</span></p>
+            </div>
+            
+            <div class="text-xs text-zinc-500 border-y md:border-y-0 md:border-x border-zinc-800 py-4 md:py-0 md:px-6">
+                <p>Website ontwikkeld door <a href="https://joeyvanderlinden.nl/" target="_blank" class="text-orange-400 hover:underline font-medium">Joey van der Linden</a></p>
+            </div>
+
+            <div>
+                <p class="text-xs text-zinc-500 font-mono">GitHub Pages • Mobile Friendly</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         JAVASCRIPT LOGICA
+    ====================================================================== -->
+    <script>
+        // Jouw projectdata netjes ingedeeld per map
+        const PROJECT_MEDIA = {
+            Opbouw: [
+                { file: "IMG-20260803-WA0017.jpg", title: "Gereviseerde Detroit V8 krukas", note: "Binnengekomen van het revisiebedrijf, vers geslepen en beschermd verpakt in folie." },
+                { file: "IMG-20260803-WA0018.jpg", title: "Motorblok & krukas na machinale bewerking", note: "Het gevlakte en gehoonde V8-onderblok op de pallet naast de krukas, klaar voor de opbouw." },
+                { file: "IMG-20260803-WA0021.jpg", title: "Kaal V8 motorblok op de bok", note: "Schoon en bewerkt Detroit Diesel blok uitgepakt op de houten montagesteun." },
+                { file: "IMG-20260803-WA0020.jpg", title: "Timing-markeringen distributietandwielen", note: "Close-up van de R-markeringen op de tandwielen voor de exacte afstelling van de distributie." },
+                { file: "IMG-20260803-WA0037.jpg", title: "Cilinderkop, tuimelaars & Roots-blower", note: "Bovenaanzicht op de gemonteerde cilinderkop, klepveren, injectoren en de blower." },
+                { file: "IMG-20260803-WA0038.jpg", title: "Zijaanzicht met gemonteerde brandstofleidingen", note: "Kleppentrein en stalen hogedruk-brandstofleidingen naar de verstuivers aangesloten." },
+                { file: "IMG-20260803-WA0039.jpg", title: "Montage watergekoeld uitlaatspruitstuk", note: "Zijkant verder opgebouwd met het groene uitlaatspruitstuk en het koelsysteem aan de voorzijde." },
+                { file: "IMG-20260803-WA0040.jpg", title: "Opgebouwde motor in de kettingtakel", note: "Zicht op het vliegwiel en het gesloten kleppendeksel terwijl de motor in de takels hangt." },
+                { file: "IMG-20260803-WA0041.jpg", title: "Vooraanzicht koelsysteem & siliconen slangen", note: "Opbouw van de koelwaterpomp, thermostaathuizen en blauwe siliconen leidingen." },
+                { file: "IMG-20260803-WA0042.jpg", title: "GM Diesel klaar voor eerste testrun", note: "Compleet opgebouwde motor met warmtewisselaar en tijdelijke brandstoftoevoer via jerrycan." }
+            ],
+            Installatie: [
+                { file: "IMG-20260803-WA0013.jpg", title: "Machinekamer overzicht & leidingwerk", note: "Zicht op de opstelling in de machinekamer met geïsoleerde uitlaatleidingen en aandrijflijn." },
+                { file: "IMG-20260803-WA0014.jpg", title: "Detroit Diesel met luchtinlaat & uitlaatisolatie", note: "Bovenaanzicht van de opgebouwde en aangesloten motor in de machinekamer." },
+                { file: "IMG-20260803-WA0015.jpg", title: "Zijaanzicht Detroit Diesel & filtersysteem", note: "Detail van het kleppendeksel, koelwaterleidingen en het gemonteerde Donaldson filter." },
+                { file: "IMG-20260803-WA0016.jpg", title: "Dubbele GM Diesel opstelling met beschermhekwerk", note: "Beide motoren op hun plek op de fundatie, voorzien van blauw veiligheidshekwerk rond de snaaraandrijving." },
+                { file: "IMG-20260803-WA0019.jpg", title: "Vooraanzicht GM Diesel & koelwatersysteem", note: "Aangesloten RVS leidingwerk, blauwe siliconen koppelingen en afscherming aan de voorzijde." }
+            ],
+            Proefdraaien: [
+                { file: "VID-20260803-WA0044.mp4", title: "Eerste start & proefdraaien in de werkplaats", note: "De opgebouwde Detroit Diesel V8 draait voor het eerst zelfstandig in de takels met tijdelijke brandstoftoevoer." },
+                { file: "VID-20260803-WA0023.mp4", title: "Proefdraaien in de machinekamer", note: "Beide GM / Detroit Diesel motoren volop in bedrijf op hun definitieve plek aan boord." }
+            ]
+        };
+
+        const PHASE_META = {
+            Opbouw: { title: "1. Opbouw & Revisie", desc: "Demontage, reiniging, revisie en opbouw van het motorblok op de montagesteun.", next: "Installatie" },
+            Installatie: { title: "2. Inbouw Machinekamer", desc: "Plaatsing van de motoren in de machinekamer, leidingwerk, isolatie en beveiliging.", next: "Proefdraaien", prev: "Opbouw" },
+            Proefdraaien: { title: "3. Proefdraaien & Teststart", desc: "Het moment van de waarheid: de allereerste start en draaitests.", prev: "Installatie" }
+        };
+
+        let currentPhase = "Opbouw";
+        let currentTypeFilter = "all";
+        let currentFilteredList = [];
+        let activeLightboxIndex = 0;
+
+        function detectMediaType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            return ['mp4', 'webm', 'mov', 'ogg', 'm4v'].includes(ext) ? 'video' : 'image';
+        }
+
+        function getNormalizedItems(phase) {
+            return (PROJECT_MEDIA[phase] || []).map((entry, idx) => {
+                const type = detectMediaType(entry.file);
+                return {
+                    id: `${phase}-${idx}`,
+                    phase: phase,
+                    file: entry.file,
+                    localPath: `./${phase}/${entry.file}`,
+                    fallbackUrl: type === 'video' 
+                        ? "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
+                        : `https://placehold.co/800x600/1c1f26/f97316?text=${encodeURIComponent(entry.title)}`,
+                    title: entry.title,
+                    description: entry.note,
+                    type: type
+                };
+            });
+        }
+
+        function updateUIState() {
+            // Tellers bijwerken
+            const opbouwCount = getNormalizedItems('Opbouw').length;
+            const instCount = getNormalizedItems('Installatie').length;
+            const proefCount = getNormalizedItems('Proefdraaien').length;
+            const total = opbouwCount + instCount + proefCount;
+
+            document.getElementById('totalItemsBadge').textContent = total;
+            document.getElementById('badge-count-Opbouw').textContent = opbouwCount;
+            document.getElementById('badge-count-Installatie').textContent = instCount;
+            document.getElementById('badge-count-Proefdraaien').textContent = proefCount;
+            
+            document.getElementById('tab-count-Opbouw').textContent = `${opbouwCount} items`;
+            document.getElementById('tab-count-Installatie').textContent = `${instCount} items`;
+            document.getElementById('tab-count-Proefdraaien').textContent = `${proefCount} items`;
+
+            // Fase kaarten stijlen
+            document.querySelectorAll('.phase-card').forEach(card => {
+                const phase = card.getAttribute('data-phase');
+                if (phase === currentPhase) {
+                    card.className = "phase-card group p-5 rounded-2xl border-2 border-orange-500 bg-gradient-to-br from-garage-800 to-garage-900 text-white shadow-lg shadow-orange-500/10 transition-all duration-300 relative overflow-hidden";
+                } else {
+                    card.className = "phase-card group p-5 rounded-2xl border border-zinc-800 bg-garage-900/60 hover:bg-garage-800/80 hover:border-zinc-700 text-zinc-300 transition-all duration-300 relative overflow-hidden";
+                }
+            });
+
+            // Type filter knoppen stijlen
+            document.querySelectorAll('.type-filter-btn').forEach(btn => {
+                const type = btn.getAttribute('data-type');
+                if (type === currentTypeFilter) {
+                    btn.className = "type-filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-orange-500 text-white shadow transition-all";
+                } else {
+                    btn.className = "type-filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-all";
+                }
+            });
+
+            // Titels en beschrijvingen bijwerken
+            const meta = PHASE_META[currentPhase];
+            document.getElementById('currentSectionTitle').textContent = meta.title;
+            document.getElementById('currentSectionDesc').textContent = meta.desc;
+
+            // Footer navigatie knoppen
+            const prevBtn = document.getElementById('prevPhaseBtn');
+            const nextBtn = document.getElementById('nextPhaseBtn');
+
+            if (meta.prev) {
+                prevBtn.classList.remove('hidden');
+                document.getElementById('prevPhaseLabel').textContent = `Naar ${meta.prev}`;
+            } else {
+                prevBtn.classList.add('hidden');
+            }
+
+            if (meta.next) {
+                nextBtn.classList.remove('hidden');
+                document.getElementById('nextPhaseLabel').textContent = `Naar ${meta.next}`;
+            } else {
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function renderGallery() {
+            updateUIState();
+
+            const allItems = getNormalizedItems(currentPhase);
+            currentFilteredList = allItems.filter(item => {
+                if (currentTypeFilter === 'all') return true;
+                return item.type === currentTypeFilter;
+            });
+
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '';
+
+            if (currentFilteredList.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-garage-900/50 rounded-2xl border border-dashed border-zinc-800">
+                        <p class="text-zinc-400 text-sm">Geen media gevonden voor dit filter in deze fase.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            currentFilteredList.forEach((item, index) => {
+                const card = document.createElement('article');
+                card.className = "group bg-garage-900 border border-zinc-800 hover:border-orange-500/60 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col cursor-pointer";
+                card.onclick = () => openLightbox(index);
+
+                let mediaHTML = '';
+                if (item.type === 'video') {
+                    mediaHTML = `
+                        <div class="relative aspect-video w-full bg-garage-950 overflow-hidden">
+                            <video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" muted playsinline preload="metadata" src="${item.localPath}#t=0.5" onerror="if(this.src !== '${item.fallbackUrl}'){this.src='${item.fallbackUrl}';}"></video>
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                    <svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                </div>
+                            </div>
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-red-600 text-white font-semibold">Video</span>
+                        </div>
+                    `;
+                } else {
+                    mediaHTML = `
+                        <div class="relative aspect-video w-full bg-garage-950 overflow-hidden">
+                            <img src="${item.localPath}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(this.src !== '${item.fallbackUrl}'){this.src='${item.fallbackUrl}';}" />
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-900/90 text-zinc-300 border border-zinc-700">Foto</span>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    ${mediaHTML}
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-display font-bold text-base text-white group-hover:text-orange-400 transition-colors line-clamp-1">${item.title}</h4>
+                            <p class="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">${item.description}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
+                            <span class="font-mono text-[11px] text-orange-400/90">Fase: ${item.phase}</span>
+                            <span class="text-zinc-300 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Bekijken &rarr;</span>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Lightbox functionaliteit
+        const lightboxModal = document.getElementById('lightboxModal');
+        const lbContentContainer = document.getElementById('lbContentContainer');
+
+        function openLightbox(index) {
+            if (index < 0 || index >= currentFilteredList.length) return;
+            activeLightboxIndex = index;
+            updateLightboxContent();
+            lightboxModal.classList.remove('hidden');
+            lightboxModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lbContentContainer.innerHTML = '';
+            lightboxModal.classList.add('hidden');
+            lightboxModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightboxContent() {
+            const item = currentFilteredList[activeLightboxIndex];
+            if (!item) return;
+
+            document.getElementById('lbPhaseBadge').textContent = item.phase;
+            document.getElementById('lbTitle').textContent = item.title;
+            document.getElementById('lbSubtitle').textContent = `Bestand: ${item.file}`;
+            document.getElementById('lbDescription').textContent = item.description;
+            document.getElementById('lbCounter').textContent = `${activeLightboxIndex + 1} / ${currentFilteredList.length}`;
+
+            lbContentContainer.innerHTML = '';
+
+            if (item.type === 'video') {
+                const videoEl = document.createElement('video');
+                videoEl.className = "max-h-[72vh] w-auto max-w-full rounded-xl border border-zinc-800 shadow-2xl bg-black";
+                videoEl.controls = true;
+                videoEl.autoplay = true;
+                videoEl.playsInline = true;
+                videoEl.src = item.localPath;
+                lbContentContainer.appendChild(videoEl);
+            } else {
+                const imgEl = document.createElement('img');
+                imgEl.className = "max-h-[75vh] w-auto max-w-full object-contain rounded-xl border border-zinc-800 shadow-2xl";
+                imgEl.src = item.localPath;
+                imgEl.alt = item.title;
+                lbContentContainer.appendChild(imgEl);
+            }
+        }
+
+        // Event Listeners voor Fase wisselen
+        document.querySelectorAll('.phase-card, .quick-phase-btn').forEach(el => {
+            el.addEventListener('click', () => {
+                currentPhase = el.getAttribute('data-phase');
+                renderGallery();
+                window.scrollTo({ top: 400, behavior: 'smooth' });
+            });
+        });
+
+        // Type filter knoppen
+        document.querySelectorAll('.type-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentTypeFilter = btn.getAttribute('data-type');
+                renderGallery();
+            });
+        });
+
+        // Volledige tijdlijn knop (opent direct Opbouw met 'Alles')
+        document.getElementById('showAllTimelineBtn').addEventListener('click', () => {
+            currentPhase = "Opbouw";
+            currentTypeFilter = "all";
+            renderGallery();
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        });
+
+        // Onderste fase navigatie
+        document.getElementById('prevPhaseBtn').addEventListener('click', () => {
+            if (currentPhase === "Installatie") currentPhase = "Opbouw";
+            else if (currentPhase === "Proefdraaien") currentPhase = "Installatie";
+            renderGallery();
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        });
+
+        document.getElementById('nextPhaseBtn').addEventListener('click', () => {
+            if (currentPhase === "Opbouw") currentPhase = "Installatie";
+            else if (currentPhase === "Installatie") currentPhase = "Proefdraaien";
+            renderGallery();
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        });
+
+        // Lightbox besturing
+        document.getElementById('closeLightboxBtn').addEventListener('click', closeLightbox);
+        document.getElementById('prevMediaBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            activeLightboxIndex = (activeLightboxIndex - 1 + currentFilteredList.length) % currentFilteredList.length;
+            updateLightboxContent();
+        });
+        document.getElementById('nextMediaBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            activeLightboxIndex = (activeLightboxIndex + 1) % currentFilteredList.length;
+            updateLightboxContent();
+        });
+
+        document.getElementById('lbTouchArea').addEventListener('click', (e) => {
+            if (e.target.id === 'lbTouchArea' || e.target.id === 'lbContentContainer') {
+                closeLightbox();
+            }
+        });
+
+        // Toetsenbord ondersteuning
+        window.addEventListener('keydown', (e) => {
+            if (!lightboxModal.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') {
+                    activeLightboxIndex = (activeLightboxIndex - 1 + currentFilteredList.length) % currentFilteredList.length;
+                    updateLightboxContent();
+                }
+                if (e.key === 'ArrowRight') {
+                    activeLightboxIndex = (activeLightboxIndex + 1) % currentFilteredList.length;
+                    updateLightboxContent();
+                }
+            }
+        });
+
+        // Swipe ondersteuning op mobiel
+        let touchStartX = 0;
+        document.getElementById('lbTouchArea').addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.getElementById('lbTouchArea').addEventListener('touchend', (e) => {
+            const diff = e.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(diff) > 50) {
+                if (diff < 0) {
+                    activeLightboxIndex = (activeLightboxIndex + 1) % currentFilteredList.length;
+                } else {
+                    activeLightboxIndex = (activeLightboxIndex - 1 + currentFilteredList.length) % currentFilteredList.length;
+                }
+                updateLightboxContent();
+            }
+        }, { passive: true });
+
+        // Initialiseren bij laden
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+        });
+    </script>
+</body>
+
+</html>
